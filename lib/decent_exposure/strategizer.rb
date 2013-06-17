@@ -1,14 +1,17 @@
 require 'decent_exposure/exposure'
 require 'decent_exposure/active_record_with_eager_attributes_strategy'
 require 'decent_exposure/strong_parameters_strategy'
+require 'decent_exposure/object_strategy'
 
 module DecentExposure
   class Strategizer
-    attr_accessor :name, :block, :options, :custom_strategy_class
+    attr_accessor :name, :block, :options, :custom_strategy_class,
+      :object_strategy_class
 
     def initialize(name, options={})
       self.name = name
       self.custom_strategy_class = options.delete(:strategy)
+      self.object_strategy_class = options.delete(:object)
       self.options = options.merge(:name => name)
       self.block = Proc.new if block_given?
     end
@@ -28,7 +31,15 @@ module DecentExposure
     end
 
     def exposure_strategy_class
-      custom_strategy_class || ActiveRecordWithEagerAttributesStrategy
+      custom_strategy_class || decent_exposure_strategy_class
+    end
+
+    def decent_exposure_strategy_class
+      if object_strategy_class
+        ObjectStrategy
+      else
+        ActiveRecordWithEagerAttributesStrategy
+      end
     end
   end
 

@@ -77,6 +77,11 @@ end
 # Controllers
 class BirdController < ActionController::Base
   include Rails.application.routes.url_helpers
+
+  decent_configuration do
+    strategy DecentExposure::ActiveRecordWithEagerAttributesStrategy
+  end
+
   expose(:bird) { "Bird" }
   expose(:ostrich) { "Ostrich" }
   expose(:albatrosses)

@@ -1,5 +1,7 @@
 require 'decent_exposure/strategizer'
 
+class MyClass; end
+
 describe DecentExposure::Strategizer do
   describe "#strategy" do
     subject { exposure.strategy }
@@ -22,6 +24,19 @@ describe DecentExposure::Strategizer do
         it "initializes a provided class" do
           DecentExposure::Exposure.should_receive(:new).with(name, strategy,{:name => name}).and_return(instance)
           should == instance
+        end
+      end
+
+      context "with an object specified" do
+        let(:exposure) { DecentExposure::Strategizer.new(name, :object => object) }
+        let(:strategy) { double("ObjectStrategy") }
+        let(:object) { MyClass }
+        let(:name) { 'my_object' }
+
+        it "sets the strategy to object strategy" do
+          DecentExposure::Exposure.should_receive(:new).
+            with(name, DecentExposure::ObjectStrategy, { :object => object, :name => name }).and_return(strategy)
+          should == strategy
         end
       end
 

@@ -269,6 +269,14 @@ expose(:article, finder: :find_by_slug)
 expose(:article, finder_parameter: :slug)
 ```
 
+**Specify a PORO:**
+
+```ruby
+expose(:revenue, object: :revenue_calculator, method: :for_company, argument: :company)
+```
+
+In the above example if the `:method` is omitted, `:new` will be used by default.
+
 ### Setting a distinct object for a single action
 
 There are times when one action in a controller is different from the
