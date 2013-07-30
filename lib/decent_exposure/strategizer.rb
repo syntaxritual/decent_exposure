@@ -1,7 +1,4 @@
 require 'decent_exposure/exposure'
-require 'decent_exposure/active_record_with_eager_attributes_strategy'
-require 'decent_exposure/strong_parameters_strategy'
-require 'decent_exposure/object_strategy'
 require 'decent_exposure/exposure_strategy_class_factory'
 
 module DecentExposure

@@ -1,4 +1,5 @@
 require 'decent_exposure/strategizer'
+require 'action_controller'
 
 class MyClass; end
 
@@ -41,15 +42,20 @@ describe DecentExposure::Strategizer do
         end
       end
 
-      context "with no custom strategy" do
+      context "with no custom strategy and strong parameters available" do
+        before do
+          ActionController.should_receive(:const_defined?)
+            .with(:StrongParameters).and_return(true)
+        end
+
         let(:exposure) { DecentExposure::Strategizer.new(name, :model => model_option) }
-        let(:strategy) { double("ActiveRecordStrategy") }
+        let(:strategy) { double("StrongParametersStrategy") }
         let(:name) { "exposed" }
         let(:model_option) { :other }
 
-        it "sets the strategy to Active Record" do
+        it "sets the strategy to Strong Parameters" do
           DecentExposure::Exposure.should_receive(:new).
-            with(name, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name, strategy: nil, object: nil}).
+            with(name, DecentExposure::StrongParametersStrategy, {:model => :other, :name => name, strategy: nil, object: nil}).
             and_return(strategy)
           should == strategy
         end
