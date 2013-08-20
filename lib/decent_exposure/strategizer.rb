@@ -19,6 +19,10 @@ module DecentExposure
       options[:strategy].present?
     end
 
+    def has_target_object?
+      options[:object].present?
+    end
+
     private
 
     def exposure_strategy
@@ -34,6 +38,7 @@ module DecentExposure
     end
 
     def merge_options(options)
+      options.merge!(object: options.delete(:object))
       options.merge!(strategy: options.delete(:strategy))
       options.merge!(name: name)
     end
